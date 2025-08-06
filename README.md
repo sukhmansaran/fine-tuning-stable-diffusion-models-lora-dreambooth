@@ -43,4 +43,11 @@ The base model used for fine-tuning is **Realistic Vision**. My approach include
 
 I started this experiment to overcome technical frustrations and incompatibilities with popular libraries, and to get a first-hand understanding of what actually matters when fine-tuning large diffusion models for personalized use. By dissecting and recombining the best parts of DreamBooth and LoRA, I hope this repo helps others navigate the world of model adaptation with greater clarity and flexibility.
 
+## Note
+- The dataset used for training is private and will not be shared publicly.
+
+- Sample images provided (if any) do not contain or reveal sensitive information.
+
+- Users wishing to replicate your results must use their own similar data.
+
 **Thank you for visiting — explore, fork, contribute, and let’s learn how to shape AI models more creatively and efficiently!**

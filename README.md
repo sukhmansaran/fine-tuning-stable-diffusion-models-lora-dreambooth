@@ -20,7 +20,7 @@ The base model used for fine-tuning is **Realistic Vision**. My approach include
 ## What are DreamBooth and LoRA?
 
 - **DreamBooth**:  
-  A fine-tuning method that enables Stable Diffusion to learn new concepts from a few example images, allowing you to personalize the model for specific subjects or styles.
+  A fine-tuning method that enables Stable Diffusion to learn new concepts from a few example images, allowing you to personalize the model for specific subjects or styles. This process is done with tuning the whole model, i.e. all model parameters are trained which is very resourceful, cost inefficient and will take alot of time.
 
 - **LoRA (Low-Rank Adaptation)**:  
   A lightweight technique that adds trainable “adapters” to key layers of large models (like attention projections), enabling rapid, memory-efficient fine-tuning for new tasks, personalities, or styles—often with less risk of overfitting or damaging core knowledge.

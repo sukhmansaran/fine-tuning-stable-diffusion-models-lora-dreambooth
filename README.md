@@ -11,11 +11,11 @@ The base model used for fine-tuning is **Realistic Vision**. My approach include
 
 | File Name                            | Description                                                                                                      |
 |-------------------------------------- |------------------------------------------------------------------------------------------------------------------|
-| **1. feedforward_fine_tuning.ipynb** | Fine-tuning with self/cross-attention and feedforward layers (UNet & text encoder), for maximum adaptation.      |
-| **2. phase1_fine_tuning.ipynb**      | Phase 1 training: fine-tune self/cross-attention layers only (UNet & text encoder). Use as standalone or part 1. |
-| **3. phase2_fine_tuning.ipynb**      | Phase 2 training: to be used as part 2 for dual-phase approach.                                                  |
-| **4. lora_image_generation.ipynb**   | Image generation using LoRA weights — for models trained via phase 1.                                            |
-| **5. dual_phase_image_gen.ipynb**    | Image generation for dual-phase-trained models (phase 1 + phase 2 LoRA weights).                                 |
+| **1. fine tuning models with feedforward layers.ipynb** | Fine-tuning with self/cross-attention and feedforward layers (UNet & text encoder), for maximum adaptation.      |
+| **2. fine tuning phase 1 code.ipynb**      | Phase 1 training: fine-tune self/cross-attention layers only (UNet & text encoder). Use as standalone or part 1. |
+| **3. fine tuning phase 2 code.ipynb**      | Phase 2 training: to be used as part 2 for dual-phase approach.                                                  |
+| **4. lora image generation.ipynb**   | Image generation using LoRA weights — for models trained via phase 1.                                            |
+| **5. dual phase lora image generation.ipynb**    | Image generation for dual-phase-trained models (phase 1 + phase 2 LoRA weights).                                 |
 
 ## What are DreamBooth and LoRA?
 

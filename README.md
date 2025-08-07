@@ -15,6 +15,10 @@ The base model used for fine-tuning is **Realistic Vision V5.1**. My approach in
 - **LoRA (Low-Rank Adaptation)**:  
   A lightweight technique that adds trainable “adapters” to key layers of large models (like attention projections), enabling rapid, memory-efficient fine-tuning for new tasks, personalities, or styles—often with less risk of overfitting or damaging core knowledge.
 
+## Why This Project?
+
+I started this experiment to gain a first-hand understanding of what actually matters when fine-tuning large diffusion models for personalized use. By dissecting and recombining the best parts of DreamBooth and LoRA, I hope this repository helps others navigate the world of model adaptation with greater clarity and flexibility.
+
 ## How These Notebooks Help
 
 - **DreamBooth meets LoRA**:  
@@ -25,6 +29,16 @@ The base model used for fine-tuning is **Realistic Vision V5.1**. My approach in
 
 - **Modular Experiments**:  
   Use any phase or training pipeline separately, or sequentially (dual-phase), and generate images with the corresponding adapters.
+
+## How to Run This Notebook Guide
+
+- **Hardware Requirements:**  
+  - GPU with 16GB VRAM  
+  - Storage: 15GB or more
+
+- You want the `max_train_steps` to be about 20-30 times your total images (ideal for thorough learning; may overfit if the dataset has limited variation).  
+- Checkpoints for sample images and model saving should be set to 5-10 times your total images (ideal for monitoring training progress and overfitting).  
+- Batch size depends on your GPU VRAM, but 1 or 2 usually works best for characters. You can increase it if your hardware allows and you want to experiment.
 
 ## Contents
 
@@ -38,17 +52,11 @@ The base model used for fine-tuning is **Realistic Vision V5.1**. My approach in
 
 ## Notes & Contributions
 
-- All notebooks are a work in progress: the code, methods, and explanations can be improved!
+- All notebooks are a work in progress: the code, methods, and explanations can be improved!  
 - **Feedback, suggestions, or pull requests are highly welcome**—this project is for learning, sharing, and potentially pushing the boundaries of model fine-tuning.
-
-## Why This Project?
-
-I started this experiment to gain a first-hand understanding of what actually matters when fine-tuning large diffusion models for personalized use. By dissecting and recombining the best parts of DreamBooth and LoRA, I hope this repository helps others navigate the world of model adaptation with greater clarity and flexibility.
 
 ## Note
 
 - The dataset used for training is private and will not be shared publicly.  
 - Sample images provided (if any) do not contain or reveal sensitive information.  
 - Users wishing to replicate these results must use their own similar data.
-
-**Thank you for visiting—explore, fork, contribute, and let’s learn how to shape AI models more creatively and efficiently!**

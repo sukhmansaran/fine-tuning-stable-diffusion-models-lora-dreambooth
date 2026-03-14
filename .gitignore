@@ -24,8 +24,8 @@ env/
 # Model weights & outputs
 models/
 outputs/
-results/sample_outputs/*.png
-!results/sample_outputs/.gitkeep
+# results/sample_outputs/*.png
+# !results/sample_outputs/.gitkeep
 
 # Data
 data/

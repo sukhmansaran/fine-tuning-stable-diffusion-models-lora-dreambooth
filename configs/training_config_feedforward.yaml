@@ -1,0 +1,42 @@
+# ============================================================
+# Stable Diffusion LoRA Training — Attention + Feedforward
+# ============================================================
+# This config is for training with both attention AND feedforward
+# (MLP) layers patched. More expressive, higher VRAM usage.
+# Corresponds to: notebooks/fine_tuning_with_feedforward_layers.ipynb
+
+# --- Paths ---
+model_path: "./models/base"
+dataset_dir: "./data/train"
+output_dir: "./outputs/lora_feedforward"
+vae_model: "stabilityai/sd-vae-ft-mse"
+
+# --- Trigger Word ---
+trigger_word: "sks"
+trigger_init_word: "person"
+
+# --- Resolution & Batching ---
+resolution: 512
+batch_size: 1
+gradient_accumulation: 4
+
+# --- Optimizer ---
+learning_rate: 4.0e-5
+lr_scheduler: "cosine"
+lr_warmup_steps: 185
+max_train_steps: 3330
+
+# --- Mixed Precision ---
+mixed_precision: "fp16"
+
+# --- LoRA Settings ---
+lora_r: 4
+lora_alpha: 8
+lora_dropout: 0.1
+train_text_encoder: true
+
+# --- Logging & Checkpoints ---
+save_every_n_steps: 1110
+log_every_n_steps: 370
+generate_every_n_steps: 370
+seed: 151101

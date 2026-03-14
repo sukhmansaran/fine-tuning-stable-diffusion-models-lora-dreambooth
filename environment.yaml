@@ -1,0 +1,24 @@
+name: sd-lora-dreambooth
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.10
+  - pip
+  - cudatoolkit=12.1
+  - pip:
+      - torch>=2.1.0
+      - torchvision>=0.16.0
+      - diffusers>=0.28.0
+      - transformers>=4.40.0
+      - accelerate>=1.0.0
+      - safetensors>=0.4.0
+      - xformers>=0.0.23
+      - datasets>=2.18.0
+      - Pillow>=10.0.0
+      - tqdm>=4.66.0
+      - numpy>=1.24.0
+      - pyyaml>=6.0
+      - huggingface-hub>=0.20.0

@@ -1,0 +1,63 @@
+# ============================================================
+# Stable Diffusion LoRA + DreamBooth Training Configuration
+# ============================================================
+
+# --- Paths ---
+model_path: "./models/base"              # Path to diffusers-format base model
+dataset_dir: "./data/train"              # Directory with .png/.jpg + matching .txt captions
+output_dir: "./outputs/lora"             # Where to save LoRA weights and checkpoints
+vae_model: "stabilityai/sd-vae-ft-mse"   # VAE model ID or path
+
+# --- Trigger Word ---
+trigger_word: "sks"                       # Identity token for your subject
+trigger_init_word: "person"               # Word to initialize trigger embedding from
+
+# --- Resolution & Batching ---
+resolution: 512
+batch_size: 1
+gradient_accumulation: 4                  # Effective batch = batch_size * gradient_accumulation
+
+# --- Optimizer ---
+learning_rate: 4.0e-5
+lr_scheduler: "cosine"                    # Options: cosine, linear, constant
+lr_warmup_steps: 185
+max_train_steps: 3330
+
+# --- Mixed Precision ---
+mixed_precision: "fp16"                   # Options: fp16, bf16, no
+
+# --- LoRA Settings ---
+lora_r: 4                                # LoRA rank
+lora_alpha: 8                            # LoRA alpha scaling
+lora_dropout: 0.1                        # LoRA dropout probability
+train_text_encoder: true                 # Whether to LoRA-patch the text encoder
+
+# --- DreamBooth Phase 2 (Dual-Phase) ---
+phase2:
+  enabled: false
+  phase1_lora_path: ""                   # Path to phase 1 LoRA .safetensors
+  phase1_config_path: ""                 # Path to phase 1 config JSON
+  dataset_dir: "./data/train_phase2"
+  max_train_steps: 3240
+  save_every_n_steps: 810
+  log_every_n_steps: 405
+  generate_every_n_steps: 405
+
+# --- Logging & Checkpoints ---
+save_every_n_steps: 1110
+log_every_n_steps: 370
+generate_every_n_steps: 370
+seed: 151101
+
+# --- Inference Defaults ---
+inference:
+  num_inference_steps: 30
+  guidance_scale: 6.5
+  height: 768
+  width: 768
+  negative_prompt: >-
+    blurry, low resolution, grainy, overexposed, underexposed, bad lighting,
+    jpeg artifacts, glitch, cropped, out of frame, watermark, duplicate,
+    poorly drawn face, asymmetrical face, deformed features, bad skin texture,
+    doll-like face, bad eyes, mutated hands, extra fingers, unrealistic proportions,
+    cartoon, anime, illustration, painting, horror, morbid

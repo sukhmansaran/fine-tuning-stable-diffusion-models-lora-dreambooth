@@ -23,16 +23,6 @@ pip install -r requirements.txt
 bash scripts/train_lora.sh
 ```
 
-## 🎬 Demo
-
-<p align="center">
-  <img src="results/demo.gif" alt="Prompt to generated images demo" width="600">
-</p>
-<p align="center"><em>Prompt → LoRA-finetuned image generation in action.</em></p>
-
-> **To create the demo GIF:** Record or stitch together a sequence showing your prompt input and the resulting generated images, then save it as `results/demo.gif`.
-
----
 
 ## 📖 Project Overview
 

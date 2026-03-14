@@ -14,6 +14,26 @@
 
 ---
 
+## ⚡ Quick Start
+
+```bash
+git clone https://github.com/sukhmansaran/fine-tuning-stable-diffusion-models-lora-dreambooth.git
+cd fine-tuning-stable-diffusion-models-lora-dreambooth
+pip install -r requirements.txt
+bash scripts/train_lora.sh
+```
+
+## 🎬 Demo
+
+<p align="center">
+  <img src="results/demo.gif" alt="Prompt to generated images demo" width="600">
+</p>
+<p align="center"><em>Prompt → LoRA-finetuned image generation in action.</em></p>
+
+> **To create the demo GIF:** Record or stitch together a sequence showing your prompt input and the resulting generated images, then save it as `results/demo.gif`.
+
+---
+
 ## 📖 Project Overview
 
 This repository provides a modular, config-driven pipeline for fine-tuning Stable Diffusion models using **LoRA** (Low-Rank Adaptation) combined with **DreamBooth** personalization techniques.
@@ -108,8 +128,8 @@ Where `r` is the rank (default: 4) and `α` is the scaling factor (default: 8). 
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/sukhmansaran/stable-diffusion-lora-dreambooth-finetuning.git
-cd stable-diffusion-lora-dreambooth-finetuning
+git clone https://github.com/sukhmansaran/fine-tuning-stable-diffusion-models-lora-dreambooth.git
+cd fine-tuning-stable-diffusion-models-lora-dreambooth
 
 # Option 1: pip
 pip install -r requirements.txt

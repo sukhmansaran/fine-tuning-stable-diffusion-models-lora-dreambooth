@@ -8,6 +8,8 @@
     <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch"></a>
     <a href="https://huggingface.co/docs/diffusers"><img src="https://img.shields.io/badge/%F0%9F%A4%97-Diffusers-yellow" alt="Diffusers"></a>
     <a href="https://huggingface.co/docs/accelerate"><img src="https://img.shields.io/badge/%F0%9F%9A%80-Accelerate-orange" alt="Accelerate"></a>
+    <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI"></a>
+    <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" alt="React"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
   </p>
 </p>
@@ -19,9 +21,25 @@
 ```bash
 git clone https://github.com/sukhmansaran/fine-tuning-stable-diffusion-models-lora-dreambooth.git
 cd fine-tuning-stable-diffusion-models-lora-dreambooth
+
+# Install Python deps
+pip install torch --index-url https://download.pytorch.org/whl/cu121
+pip install xformers
 pip install -r requirements.txt
-bash scripts/train_lora.sh
+
+# Download base model (~7 GB)
+huggingface-cli download SG161222/Realistic_Vision_V5.1_noVAE --local-dir ./models/base
+
+# Terminal 1 — API
+uvicorn src.api:app --host 0.0.0.0 --port 8000
+
+# Terminal 2 — UI
+cd frontend && npm install && npm start
+# API → http://localhost:8000
+# UI  → http://localhost:3000
 ```
+
+> See [QUICKSTART.md](QUICKSTART.md) for the full step-by-step guide.
 
 
 ## 📖 Project Overview
@@ -49,6 +67,9 @@ The entire pipeline was developed and validated on **Kaggle Tesla T4 GPUs** (16 
 | 🎯 **Attention + Feedforward Patching** | Optional MLP layer patching for increased expressiveness |
 | 💾 **Safetensors Checkpoints** | Periodic saving in the safe, fast `.safetensors` format |
 | 🌱 **Reproducible** | Seeded training with deterministic backends |
+| 🌐 **REST API** | FastAPI server for programmatic image generation |
+| 🖼️ **React UI** | Browser-based frontend for interactive generation |
+| 🚀 **CI/CD** | GitHub Actions pipeline — lint and build on every push |
 
 ## 🏗️ Architecture Overview
 
@@ -89,26 +110,42 @@ Where `r` is the rank (default: 4) and `α` is the scaling factor (default: 8). 
 
 ```
 .
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml                   # GitHub Actions — lint & build on every push
 ├── configs/
 │   ├── training_config.yaml            # Attention-only training hyperparameters
-│   └── training_config_feedforward.yaml # Attention + feedforward training hyperparameters
+│   └── training_config_feedforward.yaml
+├── frontend/                           # React + Vite web UI
+│   ├── index.html                      # Vite entry point
+│   ├── vite.config.js                  # Vite config (proxies /api → :8000)
+│   ├── package.json
+│   └── src/
+│       ├── App.jsx                     # Three-tab UI: Dataset → Fine-Tune → Generate
+│       ├── App.css
+│       ├── index.jsx
+│       └── index.css
 ├── src/
 │   ├── __init__.py
+│   ├── api.py                          # FastAPI server (scan, train, generate)
 │   ├── dataset.py                      # Image-caption dataset loader
 │   ├── pipeline.py                     # LoRA layers, model patching, weight I/O
-│   ├── train_lora.py                   # Attention-only LoRA training script
-│   ├── train_lora_feedforward.py       # Attention + feedforward LoRA training script
-│   ├── train_dreambooth.py             # Dual-phase DreamBooth training script
-│   ├── inference.py                    # Image generation CLI
-│   └── utils.py                        # Config loading, seeding, helpers
+│   ├── train_lora.py                   # Attention-only LoRA training
+│   ├── train_lora_feedforward.py       # Attention + feedforward LoRA training
+│   ├── train_dreambooth.py             # Dual-phase DreamBooth training
+│   ├── inference.py                    # CLI image generation
+│   └── utils.py                        # Helpers
 ├── scripts/
-│   ├── train_lora.sh                   # Launch attention-only training
-│   ├── train_lora_feedforward.sh       # Launch attention + feedforward training
-│   ├── train_dreambooth.sh             # Launch dual-phase training
-│   └── generate_images.sh              # Generate images from trained weights
-├── notebooks/                          # Original experimental Jupyter notebooks
-├── results/
-│   └── sample_outputs/                 # Generated sample images
+│   ├── train_lora.sh
+│   ├── train_lora_feedforward.sh
+│   ├── train_dreambooth.sh
+│   └── generate_images.sh
+├── tests/
+│   └── test_api.py
+├── notebooks/                          # Original Jupyter notebooks
+├── results/sample_outputs/
+├── QUICKSTART.md                       # Step-by-step run guide
+├── .env.example
 ├── requirements.txt
 ├── environment.yaml
 ├── LICENSE
@@ -121,7 +158,14 @@ Where `r` is the rank (default: 4) and `α` is the scaling factor (default: 8). 
 git clone https://github.com/sukhmansaran/fine-tuning-stable-diffusion-models-lora-dreambooth.git
 cd fine-tuning-stable-diffusion-models-lora-dreambooth
 
-# Option 1: pip
+# Create and activate virtual environment
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # Mac/Linux
+
+# Install torch first (CUDA 12.1 build)
+pip install torch --index-url https://download.pytorch.org/whl/cu121
+pip install xformers
 pip install -r requirements.txt
 
 # Option 2: conda
@@ -129,7 +173,7 @@ conda env create -f environment.yaml
 conda activate sd-lora-dreambooth
 ```
 
-> **Requires:** Python ≥ 3.10, NVIDIA GPU with CUDA support.
+> **Requires:** Python ≥ 3.10, Node.js ≥ 18, NVIDIA GPU with CUDA 12.1+.
 
 ## 🖥️ CUDA Requirements
 
@@ -313,6 +357,9 @@ Generated images are saved to `results/sample_outputs/` by default.
   <img src="https://img.shields.io/badge/Accelerate-FF9900?logo=huggingface&logoColor=white" alt="Accelerate">
   <img src="https://img.shields.io/badge/Safetensors-4B8BBE?logoColor=white" alt="Safetensors">
   <img src="https://img.shields.io/badge/CUDA-76B900?logo=nvidia&logoColor=white" alt="CUDA">
+  <img src="https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white" alt="GitHub Actions">
 </p>
 
 | Tool | Role |
@@ -324,6 +371,68 @@ Generated images are saved to `results/sample_outputs/` by default.
 | **Safetensors** | Fast, safe model weight serialization |
 | **LoRA** | Custom low-rank adaptation (no `peft` dependency) |
 | **DreamBooth** | Subject personalization via trigger token |
+| **FastAPI** | REST API server for dataset scanning, training, and inference |
+| **React** | Web frontend — Dataset → Fine-Tune → Generate |
+| **GitHub Actions** | CI/CD — lint and build on every push |
+
+## 🌐 REST API
+
+The FastAPI server exposes these endpoints once running (`uvicorn src.api:app --port 8000`).
+
+### `GET /health`
+```json
+{ "status": "ok", "model_loaded": true }
+```
+
+### `GET /system`
+Returns GPU info and recommended training defaults (precision, steps, batch size).
+
+### `POST /dataset/scan`
+```json
+{ "dataset_dir": "/path/to/your/images" }
+```
+Scans the directory for image+`.txt` pairs and returns a preview list.
+
+### `POST /train`
+Starts fine-tuning in a background thread. Accepts all training hyperparameters.
+
+### `GET /train/status`
+Returns current training state: `status`, `step`, `total`, `loss`, `lora_path`.
+
+### `POST /train/load`
+Hot-reloads the inference pipeline with the latest trained LoRA weights.
+
+### `POST /generate`
+```bash
+curl -X POST http://localhost:8000/generate \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "sks, cyberpunk astronaut", "num_images": 2, "steps": 30}'
+```
+Returns base64-encoded PNG images. Interactive docs at `http://localhost:8000/docs`.
+
+---
+
+## 🖼️ Web UI
+
+Open `http://localhost:3000` after starting both servers. The UI has three tabs:
+
+- **Dataset** — type a local folder path, hit Scan to preview all image/caption pairs and spot any missing captions
+- **Fine-Tune** — set trigger word, output dir, and all training metrics; GPU is auto-detected and defaults are pre-filled; live progress bar + loss during training
+- **Generate** — prompt, negative prompt, size, steps, guidance, seed, phase 2 weight; gallery with per-image download
+
+---
+
+## 🚀 CI/CD Pipeline
+
+GitHub Actions at `.github/workflows/ci-cd.yml` runs on every push:
+
+```
+push to any branch
+    ├── test-backend   → CPU-only deps, ruff lint, pytest
+    └── test-frontend  → npm install, npm run build
+```
+
+---
 
 ## 🔮 Future Improvements
 
@@ -334,6 +443,8 @@ Generated images are saved to `results/sample_outputs/` by default.
 - [ ] Weights & Biases / TensorBoard logging integration
 - [ ] SDXL and Stable Diffusion 3 support
 - [ ] Automatic hyperparameter tuning based on dataset size
+- [ ] Kubernetes / Helm chart for production scaling
+- [ ] Model versioning and A/B testing support
 
 ## 📓 Notebooks
 

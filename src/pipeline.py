@@ -109,7 +109,7 @@ class LoRALinearDualPhase(nn.Module):
 # ──────────────────────────────────────────────────────────
 
 def patch_unet_attention(
-    unet: nn.Module, rank: int, alpha: float
+    unet: nn.Module, rank: int, alpha: float, dual_phase: bool = False
 ) -> list[nn.Parameter]:
     """Patch UNet cross/self-attention layers with LoRA adapters.
 
@@ -186,6 +186,7 @@ def patch_text_encoder(
     text_encoder: nn.Module,
     rank: int,
     alpha: float,
+    dual_phase: bool = False,
 ) -> list[nn.Parameter]:
     """Patch CLIP text encoder attention layers with LoRA adapters.
 
@@ -389,7 +390,8 @@ def setup_trigger_token(
 
 def apply_lora_weights(model: nn.Module, weights_path: str) -> None:
     """Load LoRA weights from safetensors file into a patched model."""
-    state_dict = load_file(weights_path, device="cuda")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    state_dict = load_file(weights_path, device=device)
     missing = []
     for name, param in model.named_parameters():
         if "lora" in name:

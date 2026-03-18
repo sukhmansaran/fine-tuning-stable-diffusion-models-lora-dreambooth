@@ -1,4 +1,4 @@
-# Python
+# ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,33 +7,43 @@ dist/
 build/
 *.egg
 
-# Virtual environments
+# ── Virtual environments ───────────────────────────────────────────────────────
 venv/
 env/
 .venv/
 
-# IDE
+# ── IDE ────────────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Jupyter
+# ── Jupyter ────────────────────────────────────────────────────────────────────
 .ipynb_checkpoints/
 
-# Model weights & outputs
+# ── Model weights & training outputs ──────────────────────────────────────────
 models/
 outputs/
-# results/sample_outputs/*.png
-# !results/sample_outputs/.gitkeep
 
-# Data
+# ── Training data ──────────────────────────────────────────────────────────────
 data/
 
-# OS
+# ── Generated images (keep folder, ignore contents) ───────────────────────────
+results/sample_outputs/*
+!results/sample_outputs/.gitkeep
+
+# ── Environment config ─────────────────────────────────────────────────────────
+.env
+
+# ── Node / frontend ────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── OS ─────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Logs
+# ── Logs ───────────────────────────────────────────────────────────────────────
 *.log
 wandb/
